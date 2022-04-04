@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -15,11 +17,29 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('jwt.auth')->except('login','signup');
     }
-    public function signUp(Request $request){
-        dd($request);
+    public function signup(Request $request){
 
+//        $this->validate(request(), [
+//            'name' => 'required',
+//            'email' => 'required|email',
+//            'password' => 'required'
+//        ]);
+
+
+        $user = new User();
+        $user->name= $request->get('name');
+        $user->email= $request->get('email');
+        $user->password= bcrypt($request->get('password'));
+        $user->save();
+       // dd($credentials);
+        $credentials = $request->only('email', 'password');
+        $token = $this->guard()->attempt($credentials);
+
+        return response()->json([], 200);
+
+//        auth()->login($user);
     }
 
     /**
@@ -32,8 +52,10 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+//        dd($this->guard()->attempt($credentials));
 
-        if ($token = $this->guard()->attempt($credentials)) {
+        if ($token = JWTAuth::attempt($credentials)) {
+           // dd($token);
             return $this->respondWithToken($token);
         }
 
@@ -84,7 +106,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
 
