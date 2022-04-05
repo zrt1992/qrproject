@@ -17,6 +17,7 @@ class QrController extends Controller
      * create Qr code with their description in the database
      */
     public function create(){
+        dd('create');
     	return view('admin.qr.create');
     }
 
@@ -28,8 +29,6 @@ class QrController extends Controller
     }
     public function generateQrCode()
     {
-        phpinfo();
-        die;
         \QrCode::size(500)
             ->format('png')
             ->generate('codingdriver.com', public_path('images/qrcode.png'));
