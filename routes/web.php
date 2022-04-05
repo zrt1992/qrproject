@@ -22,6 +22,8 @@ Route::post('logout',function(){
 	return view('admin.index');
 })->name('logout');
 
+Route::get('qrcode', 'QRController@generateQrCode');
+
 Route::prefix('qr')->group(function(){
 	Route::get('/','QrController@index')->name('qr.index');
 	Route::get('create','QrController@create')->name('qr.create');

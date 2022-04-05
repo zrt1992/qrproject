@@ -26,4 +26,14 @@ class QrController extends Controller
     public function store(){
     	return view('admin.qr.index');
     }
+    public function generateQrCode()
+    {
+        phpinfo();
+        die;
+        \QrCode::size(500)
+            ->format('png')
+            ->generate('codingdriver.com', public_path('images/qrcode.png'));
+
+        return view('qr-code');
+    }
 }
