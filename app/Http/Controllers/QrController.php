@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use BaconQrCode\Encoder\QrCode;
+
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\QrCodeServiceProvider;
+
 
 class QrController extends Controller
 {
@@ -30,9 +32,9 @@ class QrController extends Controller
     }
     public function generateQrCode()
     {
-        QrCode::size(500)
+        QrCodeServiceProvider::size(500)
             ->format('png')
-            ->generate('codingdriver.com', public_path('images/qrcode.png'));
+            ->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
 
         return view('qr-code');
     }
