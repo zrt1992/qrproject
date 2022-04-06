@@ -33,8 +33,8 @@ class QrController extends Controller
     }
     public function generateQrCode()
     {
-        $image = QrCode::size(250)->generate('codingdriver.com');
-        echo($image);die;
+//        $image = QrCode::size(250)->generate('codingdriver.com');
+//        echo($image);die;
 
 
         return view('qr-code');
