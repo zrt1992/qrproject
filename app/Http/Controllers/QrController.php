@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use SimpleSoftwareIO\QrCode\QrCodeServiceProvider;
 
 
@@ -32,9 +33,9 @@ class QrController extends Controller
     }
     public function generateQrCode()
     {
-        QrCodeServiceProvider::size(500)
-            ->format('png')
-            ->generate('ItSolutionStuff.com', public_path('images/qrcode.png'));
+        $image = QrCode::size(250)->generate('codingdriver.com');
+        echo($image);die;
+
 
         return view('qr-code');
     }
